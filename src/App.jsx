@@ -69,6 +69,111 @@ function App() {
   function handleDragEnd(event) {
     const { over } = event;
 
+    if (over) {
+      // Ajoutez le nouveau parent et enfant
+
+      const newParent = over.id + event.active.id;
+
+      setParents([...parents, newParent]);
+      setChildren([...children, event.active.id]);
+
+      // Vérifiez si un parent existe déjà pour 'over.id'
+      const existingParent = parents.find((parent) => parent.includes(over.id));
+      const existingParentLetter = existingParent
+        ? existingParent.charAt(1)
+        : null;
+
+      const existingActiveParent = parents.find((parent) =>
+        parent.includes(event.active.id)
+      );
+      const existingActiveParentLetter = existingActiveParent
+        ? existingActiveParent.charAt(1)
+        : null;
+
+      if (existingParent || existingActiveParent) {
+        // Supprimez l'ancien parent et mettez à jour
+        setParents(
+          parents
+            .filter((parent) => parent !== existingParent)
+            .filter((parent) => parent !== existingActiveParent)
+            .concat(newParent)
+        );
+
+        setChildren(
+          children
+            .filter((child) => child !== existingParentLetter)
+            .filter((child) => child !== existingActiveParentLetter)
+            .concat(event.active.id)
+        );
+      }
+
+      // // Vérifiez si un parent existe déjà pour 'event.active.id'
+      // const existingActiveParent = parents.find((parent) =>
+      //   parent.includes(event.active.id)
+      // );
+
+      // if (existingActiveParent) {
+      //   // Supprimez l'ancien parent et mettez à jour
+      //   setParents(
+      //     parents
+      //       .filter((parent) => parent !== existingActiveParent)
+      //       .concat(newParent)
+      //   );
+      //   setChildren(
+      //     children
+      //       .filter((child) => child !== existingActiveParent.charAt(1))
+      //       .concat(event.active.id)
+      //   );
+      // }
+    } else {
+      // Supprimez le parent et l'enfant associés à 'event.active.id'
+      setParents(parents.filter((parent) => !parent.includes(event.active.id)));
+      setChildren(children.filter((child) => child !== event.active.id));
+    }
+
+    // if (over) {
+    //   setParents([...parents, over.id + event.active.id]);
+    //   setChildren([...children, event.active.id]);
+
+    //   if (parents.some((parent) => parent.includes(over.id))) {
+    //     setParents(
+    //       parents
+    //         .filter((parent) => !parent.includes(over.id))
+    //         .concat([over.id + event.active.id])
+    //     );
+    //     // parents.map((parent) => setChildren(children.concat(parent.charAt(1))));
+    //     const exclude = parents.filter((parent) => parent.includes(over.id));
+    //     if (exclude.length > 0) {
+    //       setChildren(
+    //         children
+    //           .filter((child) => child !== exclude[0].charAt(1))
+    //           .concat(event.active.id)
+    //       );
+    //     }
+    //   }
+    //   if (parents.some((parent) => parent.includes(event.active.id))) {
+    //     setParents(
+    //       parents
+    //         .filter((parent) => !parent.includes(event.active.id))
+    //         .concat([over.id + event.active.id])
+    //     );
+    //     // parents.map((parent) => setChildren(children.concat(parent.charAt(1))));
+    //     const exclude = parents.filter((parent) =>
+    //       parent.includes(event.active.id)
+    //     );
+    //     if (exclude.length > 0) {
+    //       setChildren(
+    //         children
+    //           .filter((child) => child !== exclude[0].charAt(1))
+    //           .concat(event.active.id)
+    //       );
+    //     }
+    //   }
+    // } else {
+    //   setParents(parents.filter((parent) => !parent.includes(event.active.id)));
+    //   setChildren(children.filter((child) => child !== event.active.id));
+    // }
+
     // setChildren(
     //   over && !children.includes(event.active.id)
     //     ? [...children, event.active.id]
@@ -80,36 +185,44 @@ function App() {
     // If the item is dropped over a container, set it as the parent
     // otherwise reset the parent to `null`
 
-    if (over && !children.includes(event.active.id)) {
-      setChildren([...children, event.active.id]);
-      if (parents.some((parent) => parent.includes(over.id))) {
-        const exclude = parents.filter((parent) => parent.includes(over.id));
-        if (exclude.length > 0) {
-          setChildren(
-            children
-              .filter((child) => child !== exclude[0].charAt(1))
-              .concat(event.active.id)
-          );
-        }
-      }
-    } else {
-      setChildren(children.filter((child) => child !== event.active.id));
-    }
+    // if (over) {
+    //   setChildren([...children, event.active.id]);
+    //   if (parents.some((parent) => parent.includes(over.id))) {
+    //     const exclude = parents.filter((parent) => parent.includes(over.id));
+    //     if (exclude.length > 0) {
+    //       setChildren(
+    //         children
+    //           .filter((child) => child !== exclude[0].charAt(1))
+    //           .concat(event.active.id)
+    //       );
+    //     }
+    //   }
+    // } else {
+    //   setChildren(children.filter((child) => child !== event.active.id));
+    // }
 
-    if (over) {
-      setParents([...parents, over.id + event.active.id]);
+    // if (over) {
+    //   setParents([...parents, over.id + event.active.id]);
 
-      if (parents.some((parent) => parent.includes(over.id))) {
-        setParents(
-          parents
-            .filter((parent) => !parent.includes(over.id))
-            .concat([over.id + event.active.id])
-        );
-        // parents.map((parent) => setChildren(children.concat(parent.charAt(1))));
-      }
-    } else if (!over) {
-      setParents(parents.filter((parent) => !parent.includes(event.active.id)));
-    }
+    //   if (parents.some((parent) => parent.includes(over.id))) {
+    //     setParents(
+    //       parents
+    //         .filter((parent) => !parent.includes(over.id))
+    //         .concat([over.id + event.active.id])
+    //     );
+    //     // parents.map((parent) => setChildren(children.concat(parent.charAt(1))));
+    //   }
+
+    //   if (parents.some((parent) => parent.includes(event.active.id))) {
+    //     setParents(
+    //       parents
+    //         .filter((parent) => !parent.includes(event.active.id))
+    //         .concat([over.id + event.active.id])
+    //     );
+    //   }
+    // } else if (!over) {
+    //   setParents(parents.filter((parent) => !parent.includes(event.active.id)));
+    // }
 
     // parents.map((parent) => setChildren([...children, parent.charAt(1)]));
 
