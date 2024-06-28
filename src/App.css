@@ -39,7 +39,66 @@ body {
 
 
 .main-message.started {
-  top: 5%;
+  top: 15%;
   opacity: 0;
   transition: 1s;
+}
+
+.timer {
+  position: absolute;
+  top: 15%;
+}
+
+main {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+
+.draggable {
+
+  width: 3rem;
+  height: 3rem;
+  position: relative;
+  bottom: 3rem;
+  opacity: 0;
+}
+
+
+.visible {
+  opacity: 1;
+  bottom: 0;
+  transition: bottom 0.5s, opacity 0.5s;
+}
+
+.droppable {
+  width: 3rem;
+  height: 3rem;
+  box-shadow: 0 0 10px 2px black inset;
+  border-radius: 8px;
+}
+
+select {
+  overflow-y: auto;
+}
+
+#droppables {
+  max-width: 20rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.droppable-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .symbol-list {
+    margin: 3rem;
+  }
 }

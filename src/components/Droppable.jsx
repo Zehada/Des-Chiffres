@@ -8,7 +8,7 @@ function Droppable(props) {
     color: isOver ? "green" : undefined,
   };
   return (
-    <div ref={setNodeRef} style={style}>
+    <div ref={setNodeRef} style={style} className={props.classname}>
       {props.children}
     </div>
   );
